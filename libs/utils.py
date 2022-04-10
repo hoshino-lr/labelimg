@@ -8,10 +8,12 @@ try:
     from PyQt5.QtGui import *
     from PyQt5.QtCore import *
     from PyQt5.QtWidgets import *
+
     QT5 = True
 except ImportError:
     from PyQt4.QtGui import *
     from PyQt4.QtCore import *
+
     QT5 = False
 
 
@@ -97,13 +99,15 @@ def util_qt_strlistclass():
     return QStringList if have_qstring() else list
 
 
-def natural_sort(list, key=lambda s:s):
+def natural_sort(list, key=lambda s: s):
     """
     Sort the list into natural alphanumeric order.
     """
+
     def get_alphanum_key_func(key):
         convert = lambda text: int(text) if text.isdigit() else text
         return lambda s: [convert(c) for c in re.split('([0-9]+)', key(s))]
+
     sort_key = get_alphanum_key_func(key)
     list.sort(key=sort_key)
 
@@ -115,3 +119,16 @@ if QT5:
 else:
     def trimmed(text):
         return text.trimmed()
+
+
+class IndexWrapper:
+    def __init__(self, content) -> None:
+        self.content = content
+
+    def __gettitem__(self, index):
+        try:
+            result = self.content[index]
+        except IndexError:
+            return str(index)
+        else:
+            return result

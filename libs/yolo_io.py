@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 import codecs
 import os
-
+from utils import IndexWrapper
 from libs.constants import DEFAULT_ENCODING
 
 TXT_EXT = '.txt'
@@ -96,7 +96,7 @@ class YoloReader:
 
         classes_file = open(self.class_list_path, 'r')
         self.classes = classes_file.read().strip('\n').split('\n')
-
+        self.classes = IndexWrapper(self.classes)
         # print (self.classes)
 
         img_size = [image.height(), image.width(),
